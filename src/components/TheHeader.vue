@@ -67,7 +67,8 @@ export default {
           'activeName',
           'isLogin',
           'avator',
-          'isSearchUpdate'
+          'isSearchUpdate',
+          'isLogin'
       ])
   },
   created() {
@@ -82,8 +83,12 @@ export default {
           this.$router.push({path: "/"});
       },
       goPage(path,name) {
+        if(!this.isLogin && path=='/my-music'){
+          this.$message.error("请先登录用户");
+        }
+        else{
           this.$store.commit('setActiveName',name);
-          this.$router.push({path: path});
+          this.$router.push({path: path});}
       },
       goSearch(){
           this.$store.commit('setIsSearchUpdate',true);
@@ -98,7 +103,7 @@ export default {
       if(path == 0){
         this.$store.commit('setIsLogin',false);
         this.$store.commit('setIsActive',false);
-        this.$router.go(0);
+        this.$router.push('/');
       }else{
         this.$router.push({path:path});
       }

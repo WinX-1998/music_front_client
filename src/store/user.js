@@ -3,6 +3,7 @@ const user = {
     userId: '',                 //用户id
     username: '',               //用户账号
     avator: '',               //用户头像
+    isVip:'',
   },
   getters: {
     userId: state => {
@@ -18,6 +19,13 @@ const user = {
         username = JSON.parse(window.sessionStorage.getItem('username'))
       }
       return username
+    },
+    isVip: state => {
+      let isVip = state.isVip
+      if(!isVip){
+        isVip = JSON.parse(window.sessionStorage.getItem('isVip'))
+      }
+      return isVip
     },
     avator: state => {
       let avator = state.avator
@@ -40,6 +48,10 @@ const user = {
     setAvator: (state,avator) => {
       state.avator = avator
       window.sessionStorage.setItem('avator',JSON.stringify(avator))
+    },
+    setIsVip: (state,isVip) => {
+      state.isVip = isVip
+      window.sessionStorage.setItem('isVip',JSON.stringify(isVip))
     }
   }
 }

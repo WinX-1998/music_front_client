@@ -21,6 +21,8 @@
           'showAside',         //是否显示播放中的歌曲列表
           'listOfSongs',       //当前歌曲列表
           'id',                //播放中的音乐id
+          'isLogin',
+          'userId',
         ])
       },
       mounted(){
@@ -38,6 +40,17 @@
           this.$store.commit('setTitle', name);
           this.$store.commit('setArtist',this.getSingerName(fullName));
           this.$store.commit('setLyric', this.parseLyric(lyric));
+          this.$store.commit('setIsActive',false);
+          if (this.isLogin) {
+            let param = new URLSearchParams();
+            param.append("userId", this.userId);
+            param.append("songId", id);
+            this.$axios.post("http://localhost:8888/collect/isCollected", param).then(function (data) {
+              if (data.data.status == 500) {
+                this.$store.commit('setIsActive', true);
+              }
+            })
+          }
         },
         //解析歌词
         parseLyric(text){

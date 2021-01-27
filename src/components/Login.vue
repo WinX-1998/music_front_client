@@ -38,10 +38,12 @@
               message: '登录成功!',
               type: 'success'
             });
+            console.log(response.data)
             _this.$store.commit('setIsLogin',true);
             _this.$store.commit('setUserId',response.data.object.userId);
             _this.$store.commit('setUsername',response.data.object.username);
             _this.$store.commit('setAvator',response.data.object.avator);
+            _this.$store.commit('setIsVip',response.data.object.isVip);
             setTimeout(function(){
               _this.changeIndex('首页');
               _this.$router.push({path: '/'});

@@ -12,6 +12,7 @@ import SignUp from "../components/SignUp";
 import Login from "../components/Login";
 import SingerAlbum from "../pages/SingerAlbum";
 import SongListAlbum from "../pages/SongListAlbum";
+import Setting from "../components/Setting";
 
 Vue.use(Router)
 const originalPush = Router.prototype.push
@@ -80,6 +81,11 @@ export default new Router({
       path:'/song-list-album/:id',
       name:'SongListAlbum',
       component:SongListAlbum
+    },
+    {
+      path:'/setting',
+      name:'setting',
+      component:Setting
     }
 
   ],

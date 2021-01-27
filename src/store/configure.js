@@ -4,7 +4,7 @@ const configure = {
         activeName: '' ,                //当前选中的菜单名
         isLogin:false,                  //记录当前用户是否登录
         showAside:false,                 //是否显示歌曲列表
-        isSearchUpdate:false             //是否搜索歌曲页面刷新
+        isActive: false,                //当前歌曲是否已收藏
     },
     getters: {
         activeName: state => {
@@ -27,6 +27,13 @@ const configure = {
           isLogin = JSON.parse(window.sessionStorage.getItem('isLogin'))
         }
         return isLogin
+      },
+      isActive: state => {
+        let isActive = state.isActive
+        if(!isActive){
+          isActive = JSON.parse(window.sessionStorage.getItem('isActive'))
+        }
+        return isActive
       },
       isSearchUpdate: state => {
         let isSearchUpdate = state.isSearchUpdate
@@ -53,6 +60,10 @@ const configure = {
       setIsSearchUpdate: (state,isSearchUpdate) => {
         state.isSearchUpdate = isSearchUpdate
         window.sessionStorage.setItem('isSearchUpdate',JSON.stringify(isSearchUpdate))
+      },
+      setIsActive: (state,isActive) => {
+        state.isActive = isActive
+        window.sessionStorage.setItem('isActive',JSON.stringify(isActive))
       }
     }
 }

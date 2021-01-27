@@ -24,7 +24,7 @@
           <li class="content">{{item.content}}</li>
         </ul>
       </div>
-      <div class="up" ref="up" @click="postUp(item.id,item.up,index)">
+      <div class="up" ref="up" @click="postUp(item.commentId,item.up,index)">
         <svg class="icon">
           <use xlink:href="#icon-zan"></use>
         </svg>
@@ -59,6 +59,7 @@
           commentList: [],    //存放评论列表
           userPic: [],        //用户的头像
           userName: [],       //用户的昵称
+          user:[],
         }
       },
       mounted() {
@@ -95,19 +96,19 @@
         },
         getComment(){
           let _this=this;
+          console.log("type");
+          console.log(this.type);
           if(this.type==0){
           this.$axios.get("http://localhost:8888/comment/selectCommentBySongId/"+this.playId).then(function (data) {
-            console.log(123654);
+            console.log(654789);
             console.log(data);
              _this.commentList=data.data;
               for(let item of data.data){
                 _this.getUser(item.userId);
               }
-          })
+            })
           }else{
             this.$axios.get("http://localhost:8888/comment/selectCommentBySongListId/"+this.playId).then(function (data) {
-              console.log(123654);
-              console.log(data.data);
               _this.commentList=data.data;
               for(let item of data.data){
                 _this.getUser(item.userId);
@@ -118,7 +119,9 @@
         getUser(id){
           let _this=this;
           this.$axios.get("http://localhost:8888/user/selectUserById/"+id).then(function (data) {
-            console.log(data);
+              console.log(id);
+              _this.user.push(data.data);
+              console.log(data.data.avator);
               _this.userPic.push(data.data.avator);
               _this.userName.push(data.data.username);
           })
@@ -129,6 +132,7 @@
           if(this.isLogin){
             let params = new URLSearchParams();
             params.append('id',id);
+            console.log(id);
             params.append('up',up+1);
             this.$axios.post("http://localhost:8888/comment/like",params).then(function (data) {
                   if(data.data.status==200){

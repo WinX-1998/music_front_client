@@ -60,8 +60,8 @@
           </div>
         </div>
         <!--收藏-->
-        <div class="item item-volume">
-          <svg class="icon">
+        <div class="item item-volume" @click="collection">
+          <svg :class="{active:isActive}" class="icon">
             <use xlink:href="#icon-xihuan-shi"></use>
           </svg>
         </div>
@@ -112,6 +112,9 @@
         'listIndex',            //当前歌曲在歌单中的位置
         'listOfSongs',          //当前歌单列表
         'autoNext',             //自动播放下一首
+        'isLogin',              //是否登录
+        'userId',               //用户id
+        'isActive',             //当前歌曲是否已经收藏
       ])
     },
     mounted() {
@@ -220,6 +223,30 @@
         this.$store.commit('setChangeTime',newCurTime);
       },
 
+      collection(){
+        if(this.isLogin) {
+          let _this=this;
+          let params = new URLSearchParams();
+          params.append("userId", this.userId);
+          params.append("songId", this.id);
+          params.append("type",0);
+          params.append("songListId", this.songListId);
+          this.$axios.post("http://localhost:8888/collect/addCollect",params).then(function (data) {
+            if(data.data.status){
+              _this.$store.commit("setIsActive",true);
+              _this.$message({
+                message: data.data.msg,
+                type: 'success'
+              });
+            }else{
+              _this.$message.error(data.data.msg);
+            }
+          })
+        }else{
+          this.$message.error("请先登录用户");
+        }
+      },
+
       updatemove(e) {
         if (!this.tag) {
           //进度条的左侧坐标
@@ -261,24 +288,23 @@
       },
       //播放音乐
       toplay: function(url){
-        if(url && url != this.url){
-          this.$store.commit('setId',this.listOfSongs[this.listIndex].id);
-          this.$store.commit('setUrl',this.$store.state.configure.HOST+url);
-          this.$store.commit('setPicUrl',this.$store.state.configure.HOST+this.listOfSongs[this.listIndex].pic);
-          this.$store.commit('setTitle',this.listOfSongs[this.listIndex].name);
-          this.$store.commit('setArtist',this.getSingerName(this.listOfSongs[this.listIndex].fullName));
-          this.$store.commit('setLyric',this.parseLyric(this.listOfSongs[this.listIndex].lyric));
-          /*this.$store.commit('setIsActive',false);*/
-          if(this.loginIn){
-            getCollectOfUserId(this.userId)
-              .then(res =>{
-                for(let item of res){
-                  if(item.songId == id){
-                    this.$store.commit('setIsActive',true);
-                    break;
-                  }
-                }
-              })
+        if(url && url != this.url) {
+          this.$store.commit('setId', this.listOfSongs[this.listIndex].id);
+          this.$store.commit('setUrl', this.$store.state.configure.HOST + url);
+          this.$store.commit('setPicUrl', this.$store.state.configure.HOST + this.listOfSongs[this.listIndex].pic);
+          this.$store.commit('setTitle', this.listOfSongs[this.listIndex].name);
+          this.$store.commit('setArtist', this.getSingerName(this.listOfSongs[this.listIndex].fullName));
+          this.$store.commit('setLyric', this.parseLyric(this.listOfSongs[this.listIndex].lyric));
+          this.$store.commit('setIsActive',false);
+          if (this.isLogin) {
+            let param = new URLSearchParams();
+            param.append("userId", this.userId);
+            param.append("songId", this.listOfSongs[this.listIndex].id);
+            this.$axios.post("http://localhost:8888/collect/isCollected", param).then(function (data) {
+              if (data.data.status == 500) {
+                this.$store.commit('setIsActive', true);
+              }
+            })
           }
         }
       },
