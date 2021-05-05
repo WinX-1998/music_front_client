@@ -3,7 +3,9 @@
       <h1 class="title">
         <slot name="title"></slot>
       </h1>
-      <ul>
+      <br>
+      <span style="position: center">{{introduction}}</span>
+      <!--<ul>
         <li>
           <div class="song-item">
             <span class="item-index"></span>
@@ -25,7 +27,7 @@
             <div v-if="item.vip" class="item-index"><el-tag>会员可听</el-tag></div>
           </div>
         </li>
-      </ul>
+      </ul>-->
     </div>
 </template>
 
@@ -37,10 +39,11 @@
         name: "SongsContent",
         data(){
           return{
+            ownIntroduction:this.introduction
           }
         },
       props:[
-        'listSongs'
+        'introduction'
       ],
     }
 </script>

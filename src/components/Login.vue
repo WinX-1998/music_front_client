@@ -33,6 +33,7 @@
       onSubmit() {
         const _this=this;
         this.$axios.post("http://localhost:8888/user/login",this.loginForm).then(function (response) {
+            console.log(response.data)
           if (response.data.msg=='success'){
             _this.$message({
               message: '登录成功!',
@@ -46,9 +47,15 @@
             _this.$store.commit('setIsVip',response.data.object.isVip);
             setTimeout(function(){
               _this.changeIndex('首页');
-              _this.$router.push({path: '/'});
-            },2000);
-          }else{
+              _this.$router.push({path: '/index-first'});
+            },1000);
+          }else if (response.data.status==555){
+                _this.$message({
+                  message: response.data.object,
+                  type: 'error'
+                });
+          }
+          else{
             _this.$message({
               message: '用户名或密码错误!',
               type: 'error'
@@ -57,7 +64,7 @@
         })
       },
       toRegister(){
-        this.$router.push('/register');
+        this.$router.push('/sign-up');
       },
       changeIndex(value){
         this.$store.commit('setActiveName',value);

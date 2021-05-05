@@ -70,6 +70,7 @@
       //根据style查询对应的歌单
       goSongListOfStyle(style){
         let _this=this;
+        console.log(style);
         this.$axios.get("http://localhost:8888/songList/selectSongListsByStyle/"+style).then(function (data) {
           _this.currentPage = 1;
           _this.albumDatas = data.data;

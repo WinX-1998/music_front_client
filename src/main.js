@@ -10,7 +10,15 @@ import '@/assets/js/iconfont.js'
 import '@/assets/js/iconfont1.js'
 import '@/assets/js/iconfont2.js'
 import '@/assets/js/iconfont3.js'
+import VueVideoPlayer from 'vue-video-player'
+import 'video.js/dist/video-js.css' // 引入样式
+import 'vue-video-player/src/custom-theme.css' // 引入样式
+import 'videojs-flash'
+import 'mavon-editor/dist/css/index.css'
+import mavonEditor from 'mavon-editor'  // 引入mavon-editor 就是上面所安装的
 
+
+Vue.use(VueVideoPlayer)
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false

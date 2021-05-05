@@ -5,6 +5,7 @@ export const mixin = {
       'isLogin',              //用户是否已登录
       'userId',               //当前登录用户的id
       'isVip',                //当前用户是否是vip
+      'isHide',               //是否隐藏
     ])
   },
   methods: {

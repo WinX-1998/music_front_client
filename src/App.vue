@@ -1,12 +1,6 @@
 <template>
   <div id="app">
-    <the-header />
-    <router-view :key="keyValue" class="music-content"/>
-    <song-audio></song-audio>
-    <the-aside></the-aside>
-    <scroll-top/>
-    <play-bar></play-bar>
-    <the-footer/>
+  <router-view/>
   </div>
 </template>
 
@@ -17,6 +11,8 @@ import TheFooter from './components/TheFooter';
 import SongAudio from "./components/SongAudio";
 import PlayBar from "./components/PlayBar";
 import TheAside from "./components/TheAside";
+import BlogList from "./new/FirstBlogList";
+import Bpp from "./Bpp";
 export default {
   name: 'App',
   data(){
@@ -24,6 +20,8 @@ export default {
     }
   },
   components: {
+    Bpp,
+    BlogList,
     PlayBar,
     TheHeader,
     ScrollTop,
@@ -31,11 +29,11 @@ export default {
     SongAudio,
     TheAside
   },
-  computed:{
+ /* computed:{
     keyValue:function(){
       return this.$route.fullPath
-    }
-  }
+    },
+  }*/
 }
 </script>
 

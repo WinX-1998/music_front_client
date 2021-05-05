@@ -2,22 +2,21 @@
   <div class="singer-album">
     <div class="album-slide">
       <div class="singer-img">
-        <img :src="attachImageUrl(singer.pic)">
+        <img :src="attachImageUrl(source.firstPic)">
       </div>
       <ul class="info">
-        <li v-if="singer.sex==0||singer.sex==1">{{attachSex(singer.sex)}}</li>
-        <li>生日：{{singer.birth}}</li>
-        <li>故乡：{{singer.location}}</li>
+        <li>标题：{{source.title}}</li>
+        <li>类型：{{source.style}}</li>
       </ul>
     </div>
     <div class="album-content">
       <div class="intro">
-        <h2>{{singer.name}}</h2>
-        <span>{{singer.introduction}}</span>
+        <span>点击下载</span>
       </div>
+      <el-button type="success" @click="download(source.id)"></el-button>
       <div class="content">
-        <SongsContent :listSongs="listOfSongs">
-          <template slot="title">歌单</template>
+        <SongsContent :introduction="source.introduction">
+          <template slot="title">简介</template>
         </SongsContent>
       </div>
     </div>
@@ -34,8 +33,8 @@
       components: {SongsContent},
       data(){
         return {
-          singerId: '',       //前面传来的歌手id
-          singer: {},         //当前歌手信息
+          sourceId: '',       //前面传来的歌手id
+          source: {},         //当前歌手信息
         }
       },
       computed:{
@@ -47,11 +46,21 @@
         ])
       },
       created(){
-        this.singerId = this.$route.params.id;
-        this.singer = this.tempList;
-        this.getSongOfSingerId();
+        this.sourceId = this.$route.params.id;
+        this.getSourceBySourceId();
       },
       methods:{
+        getSourceBySourceId(){
+          let _this=this;
+          console.log(this.sourceId);
+          this.$axios.get("http://localhost:8888/StudySource/selectSourceById/"+this.sourceId).then(function (data) {
+              console.log(data);
+              _this.source=data.data;
+          })
+        },
+        download(id){
+          window.location = "http://localhost:8888/StudySource/download/" + id;
+        },
         //根据歌手id查询歌曲
         getSongOfSingerId(){
           let _this=this;

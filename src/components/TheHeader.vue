@@ -1,10 +1,10 @@
 <template>
   <div class="the-header">
     <div class="header-logo" @click="goHome">
-        <svg class="icon">
+       <!-- <svg class="icon">
             <use xlink:href = "#icon-erji"></use>
-        </svg>
-        <span>music</span>
+        </svg>-->
+        <span>学习资源分享</span>
     </div>
     <ul class="navbar">
         <li :class="{active: item.name == activeName}" v-for="item in navMsg" :key="item.path" @click="goPage(item.path,item.name)">
@@ -12,7 +12,7 @@
         </li>
         <li>
             <div class="header-search">
-                <input type="text" placeholder="搜索音乐" @keyup.enter="goSearch()" v-model="keywords">
+                <input type="text" placeholder="搜索资源" @keyup.enter="goSearch()" v-model="keywords">
                 <div class="search-btn" @click="goSearch()">
                     <svg class="icon">
                         <use xlink:href = "#icon-sousuo"></use>
@@ -83,7 +83,7 @@ export default {
           this.$router.push({path: "/"});
       },
       goPage(path,name) {
-        if(!this.isLogin && path=='/my-music'){
+        if(!this.isLogin && path=='/sourceUpload'){
           this.$message.error("请先登录用户");
         }
         else{
@@ -91,9 +91,45 @@ export default {
           this.$router.push({path: path});}
       },
       goSearch(){
-          this.$store.commit('setIsSearchUpdate',true);
+         let param=new URLSearchParams();
+         let _this=this;
+         param.append("keywords",this.keywords);
+         this.$axios.post("http://localhost:8888/article/selectArticleLikeKeyWords/"+this.keywords).then(function (data) {
+           console.log(data)
+           if(data.data.status==200){
+             _this.$store.commit('setActiveName',"博客文章");
+             _this.$router.push({path:"/query-article-list",query:{articleIds:data.data.object}});
+           }else{
+             console.log(222);
+             console.log(_this.keywords);
+             let key=_this.keywords
+             console.log(key)
+             _this.$axios.get("http://localhost:8888/StudyVideo/selectStudyVideoLikeKeyWords/"+key).then(function (data) {
+               console.log(123);
+               console.log(data);
+               if(data.data.status==200){
+                 _this.$store.commit('setActiveName',"学习视频");
+                 _this.$router.push({path:"/query-video-list",query:{videoIds:data.data.object}});
+               }else{
+                 _this.$axios.get("http://localhost:8888/StudySource/selectStudySourceLikeKeyWords/"+_this.keywords).then(function (data) {
+                    console.log(data);
+                   if(data.data.status==200){
+                     _this.$store.commit('setActiveName',"资源下载");
+                     _this.$router.push({path:"/query-source-list",query:{sourceIds:data.data.object}});
+                   }else{
+                     _this.$message({
+                       message: '找不到该资源!',
+                       type: 'error'
+                     });
+                   }
+                 })
+               }
+             })
+           }
+         })
+          /*this.$store.commit('setIsSearchUpdate',true);
           console.log(this.$store.getters.isSearchUpdate);
-          this.$router.push({path:'/search',query:{keywords: this.keywords}})
+          this.$router.push({path:'/search',query:{keywords: this.keywords}})*/
       },
     //获取图片地址
     attachImageUrl (srcUrl) {
@@ -102,8 +138,9 @@ export default {
     goMenuList(path){
       if(path == 0){
         this.$store.commit('setIsLogin',false);
+        console.log('isLogin ='+this.isLogin)
         this.$store.commit('setIsActive',false);
-        this.$router.push('/');
+        this.$router.push('/index-first');
       }else{
         this.$router.push({path:path});
       }

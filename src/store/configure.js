@@ -5,8 +5,16 @@ const configure = {
         isLogin:false,                  //记录当前用户是否登录
         showAside:false,                 //是否显示歌曲列表
         isActive: false,                //当前歌曲是否已收藏
+        isHide:false,
     },
     getters: {
+      isHide: state => {
+        let activeName = state.isHide
+        if(!activeName){
+          activeName = JSON.parse(window.sessionStorage.getItem('isHide'))
+        }
+        return activeName
+      },
         activeName: state => {
             let activeName = state.activeName
             if(!activeName){
@@ -64,7 +72,11 @@ const configure = {
       setIsActive: (state,isActive) => {
         state.isActive = isActive
         window.sessionStorage.setItem('isActive',JSON.stringify(isActive))
-      }
+      },
+      setIsHide: (state,isHide) => {
+        state.isHide = isHide
+        window.sessionStorage.setItem('isHide',JSON.stringify(isHide))
+      },
     }
 }
 

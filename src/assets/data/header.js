@@ -1,9 +1,10 @@
 //导航栏
 const navMsg = [
-    {name: '首页',path: '/'},
-    {name: '歌单',path: '/song-list'},
-    {name: '歌手',path: '/singer'},
-    {name: '我的音乐',path: '/my-music'}
+    {name: '首页',path: '/index-first'},
+    {name:'博客文章',path:'/article-list'},
+    {name: '学习视频',path: '/video-list'},
+    {name: '资源下载',path: '/source-list'},
+    {name: '资源上传',path: '/sourceUpload'},
 ]
 const loginMsg = [
   {name: '登录',path: '/login'},

@@ -1,5 +1,4 @@
 <template>
-
     <div class="search">
         <nav class="searchList-nav" ref="change">
           <span :class="{isActive:toggle=='Songs'}" @click="handleChangeView('Songs')">歌曲</span>

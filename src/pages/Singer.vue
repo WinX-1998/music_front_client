@@ -1,7 +1,7 @@
 <template>
   <div class="singer">
     <ul class="singer-header">
-      <li v-for="(item,index) in singerStyle" :key="index" @click="handleChangeView(item)"
+      <li v-for="(item,index) in sourceStyle" :key="index" @click="handleChangeView(item)"
           :class="{active:item.name==activeName}">
         {{item.name}}
       </li>
@@ -18,7 +18,7 @@
 </template>
 <script>
   import ContentList from '../components/ContentList';
-  import {singerStyle} from '../assets/data/singer';
+  import {sourceStyle} from '../assets/data/sourceStyle';
 
   export default {
     name: 'singer',
@@ -30,8 +30,8 @@
         albumDatas: [],      //歌手数据
         pageSize: 15,        //页面大小，一页有15条数据
         currentPage: 1,      //当前页，默认第一页
-        singerStyle: [],           //风格
-        activeName: '全部歌手'    //当前风格
+        sourceStyle: [],           //风格
+        activeName: '全部'    //当前风格
       }
     },
     computed:{
@@ -41,14 +41,15 @@
       }
     },
     mounted(){
-      this.singerStyle = singerStyle;
+      this.sourceStyle = sourceStyle;
       this.getSingerList();
     },
 
     methods:{
       getSingerList(){
         let _this=this;
-        this.$axios.get("http://localhost:8888/singer/selectAllSinger").then(function (data) {
+        this.$axios.get("http://localhost:8888/StudySource/selectAllStudySources").then(function (data) {
+          console.log(data);
           _this.currentPage = 1;
           _this.albumDatas = data.data;
         })

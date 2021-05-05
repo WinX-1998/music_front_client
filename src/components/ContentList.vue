@@ -2,8 +2,8 @@
     <div class="content-list">
         <ul class="section-content">
             <li class="content-item" v-for="(item,index) in contentList" :key="index">
-                <div class="kuo" @click="goAlbum(item,item.name)">
-                    <img class="item-img" :src="attachImageUrl(item.pic)">
+                <div class="kuo" @click="goVideoPlay(item.id)">
+                    <img class="item-img" :src="attachImageUrl(item.firstPic)">
                     <div class="mask">
                         <svg class="icon">
                             <use xlink:href="#icon-bofang"></use>
@@ -22,6 +22,10 @@ export default {
     mixins: [mixin],
     props: ['contentList'],
     methods:{
+      goVideoPlay(id){
+        console.log(id);
+        this.$router.push({path:'/my-video-player',query:{videoId:id}});
+      },
       goAlbum(item,type){
         this.$store.commit("setTempList",item);
         if(type){                   //歌手
